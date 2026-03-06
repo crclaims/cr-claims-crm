@@ -13,11 +13,15 @@ with app.app_context():
         ("Jesus", "jesus@local.crm", "caller"),
     ]
     for full_name, email, role in users:
-        u = User.query.filter_by(email=email).first()
-        if not u:
-            u = User(full_name=full_name, email=email, role=role)
-            u.set_password(temp_password)
-            db.session.add(u)
-    db.session.commit()
-    print("Database initialized.")
-    print("Temporary password for seeded users:", temp_password)
+    u = User.query.filter_by(email=email).first()
+    if not u:
+        u = User(full_name=full_name, email=email, role=role)
+        db.session.add(u)
+
+    if email == "JD.claimsresolution@gmail.com":
+        u.full_name = full_name
+        u.role = "admin"
+        u.active = True
+        u.set_password(temp_password)
+
+db.session.commit()
