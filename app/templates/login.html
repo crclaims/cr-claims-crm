@@ -1,0 +1,24 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-5 col-lg-4">
+    <div class="card p-4 mt-5">
+      <h3 class="mb-3">Iniciar sesión</h3>
+      <form method="post">
+        <div class="mb-3"><label class="form-label">Email</label><input class="form-control" name="email" required></div>
+        <div class="mb-3"><label class="form-label">Contraseña</label><input type="password" class="form-control" name="password" required></div>
+        <button class="btn btn-primary w-100">Entrar</button>
+      </form>
+      <hr>
+      <div class="small-muted">
+        Demo users:<br>
+        JD.claimsresolution@gmail.com<br>
+        genesis@local.crm<br>
+        jesus@local.crm<br>
+        Password demo: <strong>CRclaims2026</strong>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

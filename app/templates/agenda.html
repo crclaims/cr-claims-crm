@@ -1,0 +1,40 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-12 col-lg-6">
+    <div class="card p-3">
+      <h4>Follow-ups</h4>
+      <div class="list-group">
+        {% for r in followups %}
+          <div class="list-group-item">
+            <strong>{{ r.full_address }}</strong><br>
+            {{ r.follow_up_date }}<br>
+            Estado: {{ r.current_status }}<br>
+            <a href="/property/{{ r.id }}">Abrir</a>
+          </div>
+        {% else %}
+          <div class="text-secondary">Sin follow-ups.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="card p-3">
+      <h4>Inspecciones</h4>
+      <div class="list-group">
+        {% for r in inspections %}
+          <div class="list-group-item">
+            <strong>{{ r.full_address }}</strong><br>
+            {{ r.inspection_date }} {{ r.inspection_time or '' }}<br>
+            Estado: {{ r.current_status }}<br>
+            <a href="/property/{{ r.id }}">Abrir</a>
+          </div>
+        {% else %}
+          <div class="text-secondary">Sin inspecciones.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

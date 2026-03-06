@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: cr-claims-crm
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app
+    plan: standard
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cr-claims-db
+          property: connectionString
+      - key: UPLOAD_BACKEND
+        value: s3
+      - key: UPLOAD_FOLDER
+        value: instance/uploads
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        value: us-east-1
+      - key: AWS_S3_BUCKET
+        sync: false
+
+databases:
+  - name: cr-claims-db
+    databaseName: crclaims
+    user: crclaims

@@ -1,0 +1,25 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<h3 class="mb-3">Alertas del sistema</h3>
+<div class="card">
+  <div class="list-group list-group-flush">
+    {% for r in rows %}
+      <div class="list-group-item d-flex justify-content-between align-items-start">
+        <div>
+          <strong>{{ r.title }}</strong>{% if not r.is_read %} <span class="badge text-bg-warning">Nueva</span>{% endif %}<br>
+          {{ r.message }}<br>
+          <span class="small-muted">{{ r.created_at }}{% if r.full_address %} | {{ r.full_address }}{% endif %}</span>
+        </div>
+        {% if not r.is_read %}
+        <form method="post" action="/notification/{{ r.id }}/read">
+          <button class="btn btn-sm btn-outline-dark">Marcar leída</button>
+        </form>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="list-group-item">Sin alertas.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

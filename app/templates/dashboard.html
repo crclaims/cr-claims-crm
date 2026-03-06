@@ -1,0 +1,55 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-2"><div class="card p-3"><div class="text-secondary">Casas</div><div class="display-6">{{ stats.properties }}</div></div></div>
+  <div class="col-6 col-md-2"><div class="card p-3"><div class="text-secondary">Follow-ups</div><div class="display-6">{{ stats.followups }}</div></div></div>
+  <div class="col-6 col-md-2"><div class="card p-3"><div class="text-secondary">Inspecciones</div><div class="display-6">{{ stats.inspections }}</div></div></div>
+  <div class="col-6 col-md-2"><div class="card p-3"><div class="text-secondary">Firmados</div><div class="display-6">{{ stats.signed }}</div></div></div>
+  <div class="col-6 col-md-2"><div class="card p-3"><div class="text-secondary">Visitas hoy</div><div class="display-6">{{ report.visits_today }}</div></div></div>
+  <div class="col-6 col-md-2"><div class="card p-3"><div class="text-secondary">Llamadas hoy</div><div class="display-6">{{ report.calls_today }}</div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4>Actividad reciente</h4>
+      <a class="btn btn-primary" href="/property/new">Nueva visita</a>
+    </div>
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead><tr><th>Dirección</th><th>Estado</th><th>Visitas</th><th>Última visita</th><th></th></tr></thead>
+          <tbody>
+          {% for r in recent %}
+            <tr>
+              <td>{{ r.full_address }}</td>
+              <td>{{ r.current_status }}</td>
+              <td>{{ r.total_visits }}</td>
+              <td>{{ r.last_visit_at }} / {{ r.last_visited_by }}</td>
+              <td><a class="btn btn-sm btn-outline-dark" href="/property/{{ r.id }}">Abrir</a></td>
+            </tr>
+          {% else %}
+            <tr><td colspan="5" class="text-center py-4">Sin registros todavía.</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-5">
+    <h4 class="mb-3">Follow-ups de hoy</h4>
+    <div class="card p-3">
+      {% for f in todays_followups %}
+        <div class="border-bottom pb-2 mb-2">
+          <div><strong>{{ f.full_address }}</strong></div>
+          <div>{{ f.assigned_to }} — {{ f.follow_up_type }}</div>
+          <div class="small-muted">{{ f.follow_up_date }}</div>
+        </div>
+      {% else %}
+        <div class="small-muted">No hay follow-ups pendientes para hoy.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Mapa de casas visitadas</h3>
+  <a class="btn btn-primary" href="/property/new">Nueva visita</a>
+</div>
+{% if GOOGLE_MAPS_API_KEY %}
+<div id="google-map" style="height:72vh;border-radius:14px;"></div>
+{% else %}
+<div class="alert alert-info">Google Maps API no configurada. Mostrando mapa temporal.</div>
+<div id="map" style="height:72vh;border-radius:14px;"></div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+async function loadData() {{
+  const r = await fetch('/api/properties');
+  return await r.json();
+}}
+{% if GOOGLE_MAPS_API_KEY %}
+function initMap() {{
+  const map = new google.maps.Map(document.getElementById("google-map"), {{
+    zoom: 10,
+    center: {{lat: 28.2919, lng: -81.4076}}
+  }});
+  loadData().then(items => {{
+    items.forEach(item => {{
+      const marker = new google.maps.Marker({{
+        position: {{lat: item.lat, lng: item.lng}},
+        map,
+        title: item.address
+      }});
+      const infowindow = new google.maps.InfoWindow({{
+        content: `<strong>${{item.address}}</strong><br>Estado: ${{item.status}}<br>Visitas: ${{item.total_visits}}<br><a href="/property/${{item.id}}">Abrir ficha</a>`
+      }});
+      marker.addListener("click", () => infowindow.open({{anchor: marker, map}}));
+    }});
+  }});
+}}
+window.initMap = initMap;
+{% else %}
+const map = L.map('map').setView([28.2919, -81.4076], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {{maxZoom: 19}}).addTo(map);
+loadData().then(items => {{
+  items.forEach(item => {{
+    const marker = L.circleMarker([item.lat, item.lng], {{
+      radius: 10, color: item.color, fillColor: item.color, fillOpacity: 0.85
+    }}).addTo(map);
+    marker.bindPopup(`<strong>${{item.address}}</strong><br>Estado: ${{item.status}}<br>Visitas: ${{item.total_visits}}<br><a href="/property/${{item.id}}">Abrir ficha</a>`);
+  }});
+}});
+{% endif %}
+</script>
+{% if GOOGLE_MAPS_API_KEY %}
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap"></script>
+{% endif %}
+{% endblock %}

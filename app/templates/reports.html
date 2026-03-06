@@ -1,0 +1,43 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<h3 class="mb-3">Reportes</h3>
+<div class="row g-3">
+  <div class="col-12 col-lg-4">
+    <div class="card p-3">
+      <h5>Visitas por usuario</h5>
+      <ul class="mb-0">
+        {% for r in visits_by_user %}
+          <li>{{ r.visited_by }} — {{ r.total }}</li>
+        {% else %}
+          <li>Sin datos</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="card p-3">
+      <h5>Firmados por asignado</h5>
+      <ul class="mb-0">
+        {% for r in signed_by_assignee %}
+          <li>{{ r.assigned_to or 'Sin asignar' }} — {{ r.total }}</li>
+        {% else %}
+          <li>Sin datos</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="card p-3">
+      <h5>Breakdown por estado</h5>
+      <ul class="mb-0">
+        {% for r in status_breakdown %}
+          <li>{{ r.current_status }} — {{ r.total }}</li>
+        {% else %}
+          <li>Sin datos</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

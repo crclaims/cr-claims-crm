@@ -1,0 +1,32 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<h3 class="mb-3">Follow-ups</h3>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Fecha</th><th>Dirección</th><th>Asignado</th><th>Tipo</th><th>Resultado</th><th></th></tr></thead>
+      <tbody>
+      {% for r in rows %}
+        <tr>
+          <td>{{ r.follow_up_date }}</td>
+          <td>{{ r.full_address }}</td>
+          <td>{{ r.assigned_to }}</td>
+          <td>{{ r.follow_up_type }}</td>
+          <td>{{ r.result }}</td>
+          <td>
+            {% if r.result != 'completed' %}
+            <form method="post" action="/followup/{{ r.id }}/complete">
+              <button class="btn btn-sm btn-outline-success">Completar</button>
+            </form>
+            {% else %}<span class="small-muted">Completo</span>{% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-center py-4">Sin follow-ups.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

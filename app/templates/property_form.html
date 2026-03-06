@@ -1,0 +1,75 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<h3 class="mb-3">Nueva visita / nueva casa</h3>
+<form method="post" class="card p-3">
+  <div class="row g-3">
+    <div class="col-12 col-md-8"><label class="form-label">Dirección completa</label><input class="form-control" name="full_address" required></div>
+    <div class="col-6 col-md-2"><label class="form-label"># Casa</label><input class="form-control" name="house_number"></div>
+    <div class="col-6 col-md-2"><label class="form-label">Zipcode</label><input class="form-control" name="zipcode"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Calle</label><input class="form-control" name="street_name"></div>
+    <div class="col-6 col-md-3"><label class="form-label">Ciudad</label><input class="form-control" name="city"></div>
+    <div class="col-6 col-md-2"><label class="form-label">Estado</label><input class="form-control" name="state" value="FL"></div>
+    <div class="col-6 col-md-3"><label class="form-label">County</label><input class="form-control" name="county"></div>
+    <div class="col-6 col-md-2"><label class="form-label">Lat</label><input class="form-control" id="latitude" name="latitude"></div>
+    <div class="col-6 col-md-2"><label class="form-label">Lng</label><input class="form-control" id="longitude" name="longitude"></div>
+    <div class="col-6 col-md-2 d-flex align-items-end"><button type="button" class="btn btn-outline-secondary w-100" onclick="captureGPS()">Usar GPS</button></div>
+
+    <div class="col-12 col-md-4"><label class="form-label">Estado rápido</label><select class="form-select" name="current_status">{% for s in STATUSES %}<option>{{ s }}</option>{% endfor %}</select></div>
+    <div class="col-6 col-md-2"><label class="form-label">Carros</label><select class="form-select" name="cars_in_driveway"><option>0</option><option>1</option><option>2</option><option>3+</option></select></div>
+    <div class="col-6 col-md-2"><label class="form-label">Asignado a</label><select class="form-select" name="assigned_to"><option value=""></option>{% for u in users %}<option>{{ u.full_name }}</option>{% endfor %}</select></div>
+    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="roof_damage_visible" id="roof_damage_visible"><label class="form-check-label" for="roof_damage_visible">Roof damage</label></div>
+    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="flyer_left" id="flyer_left"><label class="form-check-label" for="flyer_left">Flyer left</label></div>
+    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="gate_closed" id="gate_closed"><label class="form-check-label" for="gate_closed">Gate closed</label></div>
+    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="tarp_visible" id="tarp_visible"><label class="form-check-label" for="tarp_visible">Tarp visible</label></div>
+    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="exterior_damage_visible" id="exterior_damage_visible"><label class="form-check-label" for="exterior_damage_visible">Exterior damage</label></div>
+    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="water_stain_visible" id="water_stain_visible"><label class="form-check-label" for="water_stain_visible">Water stain</label></div>
+
+    <div class="col-12"><label class="form-label">Nota rápida</label><input class="form-control" name="quick_note" placeholder="No answer, 2 cars, roof damage visible, flyer left"></div>
+
+    <hr class="my-2">
+    <h5>Lead completo (si hablaron)</h5>
+
+    <div class="col-12 col-md-4"><label class="form-label">Owner name</label><input class="form-control" name="owner_name"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Phone</label><input class="form-control" name="phone"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Alternate phone</label><input class="form-control" name="alternate_phone"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Email</label><input class="form-control" name="email"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Idioma</label><select class="form-select" name="preferred_language"><option></option><option>English</option><option>Spanish</option><option>Creole</option><option>Other</option></select></div>
+    <div class="col-12 col-md-4"><label class="form-label">Insurance company</label><input class="form-control" name="insurance_company"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Policy name/type</label><input class="form-control" name="policy_name_or_type"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Roof age</label><input class="form-control" name="roof_age"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Home year</label><input class="form-control" name="home_year"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Years in house</label><input class="form-control" name="years_in_house"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Prior claim</label><select class="form-select" name="prior_claim"><option></option><option>Yes</option><option>No</option><option>Unknown</option></select></div>
+    <div class="col-12 col-md-4"><label class="form-label">Prior claim details</label><input class="form-control" name="prior_claim_details"></div>
+    <div class="col-12 col-md-3"><label class="form-label">Property type</label><input class="form-control" name="property_type" placeholder="Single family, condo..."></div>
+    <div class="col-12 col-md-3"><label class="form-label">Damage type</label><input class="form-control" name="damage_type" placeholder="Wind, Hail, Water - Kitchen..."></div>
+    <div class="col-12 col-md-3"><label class="form-label">Best time to contact</label><input class="form-control" name="best_time_to_contact"></div>
+    <div class="col-12 col-md-3"><label class="form-label">Follow-up type</label><select class="form-select" name="follow_up_type"><option value=""></option><option>call</option><option>text</option><option>second_visit</option><option>inspection</option><option>email</option></select></div>
+    <div class="col-12 col-md-4"><label class="form-label">Follow-up date</label><input type="date" class="form-control" name="follow_up_date"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Inspection date</label><input type="date" class="form-control" name="inspection_date"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Inspection time</label><input type="time" class="form-control" name="inspection_time"></div>
+    <div class="col-12"><label class="form-label">Damage details</label><textarea class="form-control" name="damage_details" rows="2"></textarea></div>
+    <div class="col-12"><label class="form-label">Owner objections</label><textarea class="form-control" name="owner_objections" rows="2"></textarea></div>
+    <div class="col-12"><label class="form-label">Conversation summary</label><textarea class="form-control" name="conversation_summary" rows="2"></textarea></div>
+    <div class="col-12"><label class="form-label">Notas generales</label><textarea class="form-control" name="notes" rows="3"></textarea></div>
+    <div class="col-12"><label class="form-label">Next action</label><input class="form-control" name="next_action"></div>
+
+    <div class="col-12 d-flex gap-2">
+      <button class="btn btn-primary">Guardar</button>
+      <a class="btn btn-outline-secondary" href="/">Cancelar</a>
+    </div>
+  </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+function captureGPS() {
+  if (!navigator.geolocation) return alert("GPS no disponible");
+  navigator.geolocation.getCurrentPosition((pos) => {
+    document.getElementById("latitude").value = pos.coords.latitude.toFixed(6);
+    document.getElementById("longitude").value = pos.coords.longitude.toFixed(6);
+  }, () => alert("No se pudo obtener la ubicación"));
+}
+</script>
+{% endblock %}

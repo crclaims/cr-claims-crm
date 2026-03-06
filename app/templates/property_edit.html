@@ -1,0 +1,38 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<h3 class="mb-3">Editar lead</h3>
+<form method="post" class="card p-3">
+  <div class="row g-3">
+    <div class="col-12 col-md-4"><label class="form-label">Owner name</label><input class="form-control" name="owner_name" value="{{ row.owner_name or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Phone</label><input class="form-control" name="phone" value="{{ row.phone or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Alternate phone</label><input class="form-control" name="alternate_phone" value="{{ row.alternate_phone or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Email</label><input class="form-control" name="email" value="{{ row.email or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Idioma</label><input class="form-control" name="preferred_language" value="{{ row.preferred_language or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Insurance company</label><input class="form-control" name="insurance_company" value="{{ row.insurance_company or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Policy name/type</label><input class="form-control" name="policy_name_or_type" value="{{ row.policy_name_or_type or '' }}"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Roof age</label><input class="form-control" name="roof_age" value="{{ row.roof_age or '' }}"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Home year</label><input class="form-control" name="home_year" value="{{ row.home_year or '' }}"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Years in house</label><input class="form-control" name="years_in_house" value="{{ row.years_in_house or '' }}"></div>
+    <div class="col-12 col-md-2"><label class="form-label">Prior claim</label><input class="form-control" name="prior_claim" value="{{ row.prior_claim or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Prior claim details</label><input class="form-control" name="prior_claim_details" value="{{ row.prior_claim_details or '' }}"></div>
+    <div class="col-12 col-md-3"><label class="form-label">Property type</label><input class="form-control" name="property_type" value="{{ row.property_type or '' }}"></div>
+    <div class="col-12 col-md-3"><label class="form-label">Damage type</label><input class="form-control" name="damage_type" value="{{ row.damage_type or '' }}"></div>
+    <div class="col-12 col-md-3"><label class="form-label">Best time to contact</label><input class="form-control" name="best_time_to_contact" value="{{ row.best_time_to_contact or '' }}"></div>
+    <div class="col-12 col-md-3"><label class="form-label">Assigned to</label><select class="form-select" name="assigned_to"><option value=""></option>{% for u in users %}<option {% if row.assigned_to==u.full_name %}selected{% endif %}>{{ u.full_name }}</option>{% endfor %}</select></div>
+    <div class="col-12 col-md-4"><label class="form-label">Current status</label><select class="form-select" name="current_status">{% for s in STATUSES %}<option {% if row.current_status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></div>
+    <div class="col-12 col-md-4"><label class="form-label">Follow-up date</label><input type="date" class="form-control" name="follow_up_date" value="{{ row.follow_up_date or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Inspection date</label><input type="date" class="form-control" name="inspection_date" value="{{ row.inspection_date or '' }}"></div>
+    <div class="col-12 col-md-4"><label class="form-label">Inspection time</label><input type="time" class="form-control" name="inspection_time" value="{{ row.inspection_time or '' }}"></div>
+    <div class="col-12"><label class="form-label">Damage details</label><textarea class="form-control" name="damage_details" rows="2">{{ row.damage_details or '' }}</textarea></div>
+    <div class="col-12"><label class="form-label">Owner objections</label><textarea class="form-control" name="owner_objections" rows="2">{{ row.owner_objections or '' }}</textarea></div>
+    <div class="col-12"><label class="form-label">Conversation summary</label><textarea class="form-control" name="conversation_summary" rows="2">{{ row.conversation_summary or '' }}</textarea></div>
+    <div class="col-12"><label class="form-label">Notas</label><textarea class="form-control" name="notes" rows="3">{{ row.notes or '' }}</textarea></div>
+
+    <div class="col-12 d-flex gap-2">
+      <button class="btn btn-primary">Guardar cambios</button>
+      <a class="btn btn-outline-secondary" href="/property/{{ row.id }}">Cancelar</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

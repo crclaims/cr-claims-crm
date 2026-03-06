@@ -1,0 +1,213 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3>{{ row.full_address }}</h3>
+    <div class="small-muted">Visitas: {{ row.total_visits }} | Última: {{ row.last_visit_at }} por {{ row.last_visited_by }}</div>
+  </div>
+  <div class="d-flex gap-2">
+    <span class="badge text-bg-dark">{{ row.current_status }}</span>
+    <a class="btn btn-outline-dark" href="/property/{{ row.id }}/edit">Editar lead</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-5">
+    <div class="card p-3">
+      <h5>Lead</h5>
+      <p class="mb-1"><strong>Owner:</strong> {{ row.owner_name or '' }}</p>
+      <p class="mb-1"><strong>Phone:</strong> {{ row.phone or '' }}</p>
+      <p class="mb-1"><strong>Alt phone:</strong> {{ row.alternate_phone or '' }}</p>
+      <p class="mb-1"><strong>Email:</strong> {{ row.email or '' }}</p>
+      <p class="mb-1"><strong>Idioma:</strong> {{ row.preferred_language or '' }}</p>
+      <p class="mb-1"><strong>Seguro:</strong> {{ row.insurance_company or '' }}</p>
+      <p class="mb-1"><strong>Póliza:</strong> {{ row.policy_name_or_type or '' }}</p>
+      <p class="mb-1"><strong>Roof age:</strong> {{ row.roof_age or '' }}</p>
+      <p class="mb-1"><strong>Home year:</strong> {{ row.home_year or '' }}</p>
+      <p class="mb-1"><strong>Years in house:</strong> {{ row.years_in_house or '' }}</p>
+      <p class="mb-1"><strong>Prior claim:</strong> {{ row.prior_claim or '' }}</p>
+      <p class="mb-1"><strong>Damage:</strong> {{ row.damage_type or '' }}</p>
+      <p class="mb-1"><strong>Assigned to:</strong> {{ row.assigned_to or '' }}</p>
+      <p class="mb-1"><strong>Follow-up:</strong> {{ row.follow_up_date or '' }}</p>
+      <p class="mb-1"><strong>Inspection:</strong> {{ row.inspection_date or '' }} {{ row.inspection_time or '' }}</p>
+      <p class="mb-1"><strong>Objeciones:</strong> {{ row.owner_objections or '' }}</p>
+      <p class="mb-1"><strong>Resumen:</strong> {{ row.conversation_summary or '' }}</p>
+      <p class="mb-0"><strong>Notas:</strong> {{ row.notes or '' }}</p>
+    </div>
+
+    <div class="card p-3 mt-3">
+      <h5>Nueva visita</h5>
+      <form method="post" action="/property/{{ row.id }}/visit">
+        <div class="mb-2"><label class="form-label">Visitado por</label><input class="form-control" name="visited_by" value="{{ current_user_name }}"></div>
+        <div class="mb-2"><label class="form-label">Resultado</label><select class="form-select" name="result_status">{% for s in STATUSES %}<option>{{ s }}</option>{% endfor %}</select></div>
+        <div class="row g-2 mb-2">
+          <div class="col"><label class="form-label">Cars</label><select class="form-select" name="cars_in_driveway"><option>0</option><option>1</option><option>2</option><option>3+</option></select></div>
+          <div class="col"><label class="form-label">Assigned to</label><input class="form-control" name="assigned_to" value="{{ row.assigned_to or '' }}"></div>
+        </div>
+        <div class="row">
+          <div class="col-6 form-check"><input class="form-check-input" type="checkbox" name="roof_damage_visible" id="rdv"><label class="form-check-label" for="rdv">Roof damage</label></div>
+          <div class="col-6 form-check"><input class="form-check-input" type="checkbox" name="flyer_left" id="fl"><label class="form-check-label" for="fl">Flyer left</label></div>
+          <div class="col-6 form-check"><input class="form-check-input" type="checkbox" name="gate_closed" id="gc"><label class="form-check-label" for="gc">Gate closed</label></div>
+          <div class="col-6 form-check"><input class="form-check-input" type="checkbox" name="tarp_visible" id="tv"><label class="form-check-label" for="tv">Tarp visible</label></div>
+          <div class="col-6 form-check"><input class="form-check-input" type="checkbox" name="exterior_damage_visible" id="ed"><label class="form-check-label" for="ed">Exterior damage</label></div>
+          <div class="col-6 form-check"><input class="form-check-input" type="checkbox" name="water_stain_visible" id="ws"><label class="form-check-label" for="ws">Water stain</label></div>
+        </div>
+        <div class="my-2"><label class="form-label">Nota rápida</label><input class="form-control" name="quick_note"></div>
+        <div class="my-2"><label class="form-label">Actualizar nota general</label><textarea class="form-control" name="property_notes" rows="2"></textarea></div>
+        <div class="row g-2 mb-2">
+          <div class="col"><label class="form-label">Follow-up</label><input type="date" class="form-control" name="follow_up_date"></div>
+          <div class="col"><label class="form-label">Inspection</label><input type="date" class="form-control" name="inspection_date"></div>
+          <div class="col"><label class="form-label">Time</label><input type="time" class="form-control" name="inspection_time"></div>
+        </div>
+        <div class="row g-2 mb-2">
+          <div class="col"><label class="form-label">Follow-up type</label><select class="form-select" name="follow_up_type"><option>call</option><option>text</option><option>second_visit</option><option>inspection</option><option>email</option></select></div>
+          <div class="col"><label class="form-label">Next action</label><input class="form-control" name="next_action"></div>
+        </div>
+        <button class="btn btn-primary w-100">Guardar visita</button>
+      </form>
+    </div>
+
+    <div class="card p-3 mt-3">
+      <h5>Registrar llamada</h5>
+      <form method="post" action="/property/{{ row.id }}/call">
+        <div class="mb-2">
+          <label class="form-label">Resultado llamada</label>
+          <select class="form-select" name="call_result">
+            <option>no_answer</option>
+            <option>voicemail</option>
+            <option>spoke</option>
+            <option>call_back_later</option>
+            <option>inspection_confirmed</option>
+            <option>not_interested</option>
+          </select>
+        </div>
+        <div class="mb-2"><label class="form-label">Notas</label><textarea class="form-control" name="notes" rows="2"></textarea></div>
+        <div class="mb-2"><label class="form-label">Próxima acción</label><input class="form-control" name="next_action"></div>
+        <div class="mb-2"><label class="form-label">Próximo follow-up</label><input type="date" class="form-control" name="next_follow_up_date"></div>
+        <button class="btn btn-outline-dark w-100">Guardar llamada</button>
+      </form>
+    </div>
+
+    <div class="card p-3 mt-3">
+      <h5>Adjuntar archivo</h5>
+      <form method="post" action="/property/{{ row.id }}/upload" enctype="multipart/form-data">
+        <div class="mb-2">
+          <label class="form-label">Tipo de archivo</label>
+          <select class="form-select" name="file_type">
+            <option>roof_photo</option>
+            <option>house_photo</option>
+            <option>damage_photo</option>
+            <option>document</option>
+            <option>contract</option>
+            <option>other</option>
+          </select>
+        </div>
+        <div class="mb-2"><input type="file" class="form-control" name="file" required></div>
+        <button class="btn btn-outline-primary w-100">Subir archivo</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-7">
+    <div class="card p-3 mb-3">
+      <h5>Historial de estados</h5>
+      <div class="list-group">
+      {% for h in history %}
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <strong>{{ h.old_status or 'Nuevo' }} → {{ h.new_status }}</strong>
+            <span>{{ h.created_at }}</span>
+          </div>
+          <div>{{ h.changed_by }}</div>
+          <div class="small-muted">{{ h.change_note or '' }}</div>
+        </div>
+      {% else %}
+        <div class="small-muted">Sin historial.</div>
+      {% endfor %}
+      </div>
+    </div>
+
+    <div class="card p-3 mb-3">
+      <h5>Historial de visitas</h5>
+      <div class="list-group">
+      {% for v in visits %}
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <strong>{{ v.result_status }}</strong>
+            <span>{{ v.visited_at }}</span>
+          </div>
+          <div>{{ v.visited_by }}</div>
+          <div class="small text-secondary">
+            Roof damage: {{ 'Sí' if v.roof_damage_visible else 'No' }} |
+            Flyer: {{ 'Sí' if v.flyer_left else 'No' }} |
+            Cars: {{ v.cars_in_driveway or '' }}
+          </div>
+          <div>{{ v.quick_note or '' }}</div>
+        </div>
+      {% else %}
+        <div class="small-muted">Sin visitas todavía.</div>
+      {% endfor %}
+      </div>
+    </div>
+
+    <div class="card p-3 mb-3">
+      <h5>Follow-ups</h5>
+      <div class="list-group">
+      {% for f in followups %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ f.follow_up_type }}</strong> — {{ f.follow_up_date }}<br>
+            {{ f.assigned_to }} | {{ f.result }}<br>
+            <span class="small-muted">{{ f.next_action or '' }}</span>
+          </div>
+          {% if f.result != 'completed' %}
+          <form method="post" action="/followup/{{ f.id }}/complete">
+            <button class="btn btn-sm btn-outline-success">Completar</button>
+          </form>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="small-muted">Sin follow-ups.</div>
+      {% endfor %}
+      </div>
+    </div>
+
+    <div class="card p-3 mb-3">
+      <h5>Call logs</h5>
+      <div class="list-group">
+      {% for c in calls %}
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <strong>{{ c.call_result }}</strong>
+            <span>{{ c.created_at }}</span>
+          </div>
+          <div>{{ c.called_by }}</div>
+          <div>{{ c.notes or '' }}</div>
+          <div class="small-muted">Next: {{ c.next_action or '' }} | Follow-up: {{ c.next_follow_up_date or '' }}</div>
+        </div>
+      {% else %}
+        <div class="small-muted">Sin llamadas.</div>
+      {% endfor %}
+      </div>
+    </div>
+
+    <div class="card p-3">
+      <h5>Adjuntos</h5>
+      <div class="list-group">
+      {% for a in attachments %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ a.file_name }}</strong><br>
+            <span class="small-muted">{{ a.file_type }} | {{ a.uploaded_by }} | {{ a.uploaded_at }}</span>
+          </div>
+          <a class="btn btn-sm btn-outline-dark" href="/attachment/{{ a.id }}/download">Descargar</a>
+        </div>
+      {% else %}
+        <div class="small-muted">Sin adjuntos.</div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
