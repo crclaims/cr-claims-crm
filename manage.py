@@ -18,6 +18,8 @@ with app.app_context():
 
         if not u:
             u = User(full_name=full_name, email=email, role=role)
+            u.active = True
+            u.set_password(temp_password)
             db.session.add(u)
 
         if email == "JD.claimsresolution@gmail.com":
