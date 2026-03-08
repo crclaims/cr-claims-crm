@@ -6,7 +6,7 @@ app = create_app()
 
 with app.app_context():
     db.create_all()
-    temp_password = os.getenv("ADMIN_TEMP_PASSWORD", "2lau#NnQYR2q1ojbKphS")
+    temp_password = "CRclaims2026"
     users = [
         ("Elizabeth", "JD.claimsresolution@gmail.com", "admin"),
         ("Genesis", "genesis@local.crm", "canvasser"),
