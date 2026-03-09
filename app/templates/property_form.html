@@ -133,37 +133,6 @@ if (!confirmed && fullAddressInput) {
 } catch (error) {
   alert("Se capturó el GPS, pero falló la conversión a dirección.");
 }
-// Buscar casas cercanas
-const radar = await fetch(`/api/properties/nearby?lat=${lat}&lng=${lng}&radius_m=250`);
-const houses = await radar.json();
-
-const currentZip = (zipcode || "").trim();
-const currentAddress = (fullAddress || "").trim().toLowerCase();
-
-const filteredHouses = houses.filter(h => {
-  const houseAddress = (h.address || "").trim().toLowerCase();
-
-  const sameZip = currentZip ? houseAddress.includes(currentZip) : true;
-  const notSameHouse = houseAddress !== currentAddress;
-
-  return sameZip && notSameHouse;
-});
-
-if (filteredHouses.length > 0) {
-  let message = "🏠 Casas registradas cerca:\n\n";
-
-  filteredHouses.forEach(h => {
-    message += `${h.address} - ${h.status}\n`;
-  });
-
-  alert(message);
-} else {
-  alert("No se encontraron casas registradas cerca.");
-}
-}
-  }, () => {
-  alert("No se pudo obtener la ubicación");
-});
 }
 </script>
 {% endblock %}
