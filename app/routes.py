@@ -487,7 +487,52 @@ def api_properties():
             "owner_name": r.owner_name or "",
         })
     return jsonify(data)
+@bp.route("/api/properties/nearby")
+@login_required
+def api_properties_nearby():
+    lat = request.args.get("lat", type=float)
+    lng = request.args.get("lng", type=float)
+    radius_m = request.args.get("radius_m", default=50, type=float)
 
+    if lat is None or lng is None:
+        return jsonify([])
+
+    lat_delta = radius_m / 111320.0
+    lng_delta = radius_m / 111320.0
+
+    candidates = Property.query.filter(
+        Property.latitude.isnot(None),
+        Property.longitude.isnot(None),
+        Property.latitude >= lat - lat_delta,
+        Property.latitude <= lat + lat_delta,
+        Property.longitude >= lng - lng_delta,
+        Property.longitude <= lng + lng_delta
+    ).all()
+
+    data = []
+
+    for r in candidates:
+        dlat_m = (r.latitude - lat) * 111320.0
+        dlng_m = (r.longitude - lng) * 111320.0
+        distance_m = ((dlat_m * dlat_m) + (dlng_m * dlng_m)) ** 0.5
+
+        if distance_m <= radius_m:
+            data.append({
+                "id": r.id,
+                "address": r.full_address,
+                "status": r.current_status,
+                "color": STATUS_COLORS.get(r.current_status, "gray"),
+                "lat": r.latitude,
+                "lng": r.longitude,
+                "distance_m": round(distance_m, 1),
+                "total_visits": r.total_visits,
+                "last_visit_at": r.last_visit_at.isoformat() if r.last_visit_at else "",
+                "last_visited_by": r.last_visited_by or "",
+                "owner_name": r.owner_name or ""
+            })
+
+    data.sort(key=lambda x: x["distance_m"])
+    return jsonify(data)
 @bp.route("/agenda")
 @login_required
 def agenda():
