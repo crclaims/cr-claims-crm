@@ -85,41 +85,57 @@ async function captureGPS() {
                 const addr = data.address;
 
                 const houseNumber = addr.house_number || "";
-                const road = addr.road || "";
-                const city = addr.city || addr.town || addr.village || "";
-                const state = addr.state || "FL";
-                const zipcode = addr.postcode || "";
-                const county = addr.county || "";
+const road = addr.road || "";
+const city = addr.city || addr.town || addr.village || addr.municipality || addr.hamlet || addr.suburb || "";
+const state = addr.state || "FL";
+const zipcode = addr.postcode || "";
+const county = addr.county || "";
 
-                const fullAddress = data.display_name || "";
-                const streetLine = [houseNumber, road].filter(Boolean).join(" ");
+const suggestedAddress = [
+  houseNumber,
+  road,
+  city,
+  state,
+  zipcode
+].filter(Boolean).join(", ");
 
-                const fullAddressInput = document.querySelector('input[name="full_address"]');
-                const houseInput = document.querySelector('input[name="house_number"]');
-                const zipInput = document.querySelector('input[name="zipcode"]');
-                const streetInput = document.querySelector('input[name="street_name"]');
-                const cityInput = document.querySelector('input[name="city"]');
-                const stateInput = document.querySelector('input[name="state"]');
-                const countyInput = document.querySelector('input[name="county"]');
+const fullAddress = suggestedAddress || data.display_name || "";
 
-                if (fullAddressInput) fullAddressInput.value = fullAddress;
-                if (houseInput) houseInput.value = houseNumber;
-                if (zipInput) zipInput.value = zipcode;
-                if (streetInput) streetInput.value = road;
-                if (cityInput) cityInput.value = city;
-                if (stateInput) stateInput.value = state;
-                if (countyInput) countyInput.value = county;
-              
-                alert("GPS capturado y dirección completada automáticamente.");
-            } else {
-                alert("Se capturó el GPS, pero no se pudo traducir a dirección.");
-            }
-        } catch (error) {
-            alert("Se capturó el GPS, pero falló la conversión a dirección.");
-        }
-    }, () => {
-        alert("No se pudo obtener la ubicación");
-    });
+const fullAddressInput = document.querySelector('input[name="full_address"]');
+const houseInput = document.querySelector('input[name="house_number"]');
+const zipInput = document.querySelector('input[name="zipcode"]');
+const streetInput = document.querySelector('input[name="street_name"]');
+const cityInput = document.querySelector('input[name="city"]');
+const stateInput = document.querySelector('input[name="state"]');
+const countyInput = document.querySelector('input[name="county"]');
+
+if (fullAddressInput) fullAddressInput.value = fullAddress;
+if (houseInput) houseInput.value = houseNumber;
+if (zipInput) zipInput.value = zipcode;
+if (streetInput) streetInput.value = road;
+if (cityInput) cityInput.value = city;
+if (stateInput) stateInput.value = state;
+if (countyInput) countyInput.value = county;
+
+const confirmed = confirm(
+  "Dirección detectada:\n\n" +
+  fullAddress +
+  "\n\nPresione Aceptar si es correcta.\n" +
+  "Presione Cancelar para corregirla manualmente antes de guardar."
+);
+
+if (!confirmed && fullAddressInput) {
+  fullAddressInput.focus();
+}
+   } else {
+  alert("Se capturó el GPS, pero no se pudo traducir a dirección.");
+}
+} catch (error) {
+  alert("Se capturó el GPS, pero falló la conversión a dirección.");
+}
+}, () => {
+  alert("No se pudo obtener la ubicación");
+});
 }
 </script>
 {% endblock %}
