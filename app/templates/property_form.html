@@ -133,6 +133,9 @@ if (!confirmed && fullAddressInput) {
 } catch (error) {
   alert("Se capturó el GPS, pero falló la conversión a dirección.");
 }
+}, () => {
+    alert("No se pudo obtener la ubicación");
+  });
 }
 </script>
 {% endblock %}
