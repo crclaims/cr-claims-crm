@@ -13,23 +13,33 @@ from .models import User, Property, Visit, FollowUp, CallLog, Attachment, Notifi
 bp = Blueprint("main", __name__)
 
 STATUSES = [
-    "Door Knocked", "No Answer", "Talked", "Possible Prospect", "Follow Up Needed",
-    "Inspection Scheduled", "Inspection Completed", "Signed", "Claim Opened", "Not Interested"
+    "Door Knocked & Flyer Left",
+    "No Answer",
+    "Follow Up",
+    "Text",
+    "Talk",
+    "Possible Prospect",
+    "Inspection Scheduled",
+    "Inspection Completed",
+    "Signed LOR",
+    "Claims Opened",
+    "Not Interest"
 ]
 
 STATUS_COLORS = {
-    "Door Knocked": "gray",
-    "No Answer": "red",
-    "Talked": "orange",
-    "Possible Prospect": "goldenrod",
-    "Follow Up Needed": "gold",
-    "Inspection Scheduled": "green",
-    "Inspection Completed": "darkgreen",
-    "Signed": "blue",
-    "Claim Opened": "purple",
-    "Not Interested": "black",
+    "Door Knocked & Flyer Left": "#7A1E3A",   # rojo vino
+    "No Answer": "#F4D35E",                   # amarillo
+    "Follow Up": "#C99700",                   # mostaza
+    "Text": "#7BD389",                        # verde claro
+    "Talk": "#1B5E20",                        # verde oscuro
+    "Possible Prospect": "#F28C28",           # naranja
+    "Inspection Scheduled": "#D9D9D9",        # gris claro
+    "Inspection Completed": "#7EC8E3",        # azul claro
+    "Signed LOR": "#0B3D91",                  # azul marino
+    "Claims Opened": "#7B2CBF",               # púrpura
+    "Not Interest": "#C62828"                 # rojo
 }
-
+  
 @bp.app_context_processor
 def inject_globals():
     unread = Notification.query.filter_by(is_read=False).count() if current_user.is_authenticated else 0
@@ -73,7 +83,7 @@ def dashboard():
         "properties": Property.query.count(),
         "followups": FollowUp.query.filter_by(result="pending").count(),
         "inspections": Property.query.filter_by(current_status="Inspection Scheduled").count(),
-        "signed": Property.query.filter_by(current_status="Signed").count(),
+        "signed": Property.query.filter_by(current_status="Signed LOR").count(),
         "visits_today": Visit.query.filter(db.func.date(Visit.visited_at) == datetime.utcnow().date()).count(),
         "calls_today": CallLog.query.filter(db.func.date(CallLog.created_at) == datetime.utcnow().date()).count(),
     }
@@ -426,7 +436,7 @@ def notification_read(notification_id):
 @login_required
 def reports():
     visits_by_user = db.session.query(Visit.visited_by, db.func.count(Visit.id).label("total")).group_by(Visit.visited_by).order_by(db.desc("total")).all()
-    signed_by_assignee = db.session.query(Property.assigned_to, db.func.count(Property.id).label("total")).filter(Property.current_status=="Signed").group_by(Property.assigned_to).order_by(db.desc("total")).all()
+    signed_by_assignee = db.session.query(Property.assigned_to, db.func.count(Property.id).label("total")).filter(Property.current_status=="Signed LOR").group_by(Property.assigned_to).order_by(db.desc("total")).all()
     status_breakdown = db.session.query(Property.current_status, db.func.count(Property.id).label("total")).group_by(Property.current_status).order_by(db.desc("total")).all()
     return render_template("reports.html", visits_by_user=visits_by_user, signed_by_assignee=signed_by_assignee, status_breakdown=status_breakdown)
 
