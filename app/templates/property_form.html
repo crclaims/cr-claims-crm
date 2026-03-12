@@ -35,25 +35,218 @@
     <div class="col-12 col-md-4"><label class="form-label">Alternate phone</label><input class="form-control" name="alternate_phone"></div>
     <div class="col-12 col-md-4"><label class="form-label">Email</label><input class="form-control" name="email"></div>
     <div class="col-12 col-md-4"><label class="form-label">Idioma</label><select class="form-select" name="preferred_language"><option></option><option>English</option><option>Spanish</option><option>Creole</option><option>Other</option></select></div>
-    <div class="col-12 col-md-4"><label class="form-label">Insurance company</label><input class="form-control" name="insurance_company"></div>
-    <div class="col-12 col-md-4"><label class="form-label">Policy name/type</label><input class="form-control" name="policy_name_or_type"></div>
-    <div class="col-12 col-md-2"><label class="form-label">Roof age</label><input class="form-control" name="roof_age"></div>
-    <div class="col-12 col-md-2"><label class="form-label">Home year</label><input class="form-control" name="home_year"></div>
-    <div class="col-12 col-md-2"><label class="form-label">Years in house</label><input class="form-control" name="years_in_house"></div>
-    <div class="col-12 col-md-2"><label class="form-label">Prior claim</label><select class="form-select" name="prior_claim"><option></option><option>Yes</option><option>No</option><option>Unknown</option></select></div>
-    <div class="col-12 col-md-4"><label class="form-label">Prior claim details</label><input class="form-control" name="prior_claim_details"></div>
-    <div class="col-12 col-md-3"><label class="form-label">Property type</label><input class="form-control" name="property_type" placeholder="Single family, condo..."></div>
-    <div class="col-12 col-md-3"><label class="form-label">Damage type</label><input class="form-control" name="damage_type" placeholder="Wind, Hail, Water - Kitchen..."></div>
-    <div class="col-12 col-md-3"><label class="form-label">Best time to contact</label><input class="form-control" name="best_time_to_contact"></div>
-    <div class="col-12 col-md-3"><label class="form-label">Follow-up type</label><select class="form-select" name="follow_up_type"><option value=""></option><option>call</option><option>text</option><option>second_visit</option><option>inspection</option><option>email</option></select></div>
-    <div class="col-12 col-md-4"><label class="form-label">Follow-up date</label><input type="date" class="form-control" name="follow_up_date"></div>
-    <div class="col-12 col-md-4"><label class="form-label">Inspection date</label><input type="date" class="form-control" name="inspection_date"></div>
-    <div class="col-12 col-md-4"><label class="form-label">Inspection time</label><input type="time" class="form-control" name="inspection_time"></div>
-    <div class="col-12"><label class="form-label">Damage details</label><textarea class="form-control" name="damage_details" rows="2"></textarea></div>
-    <div class="col-12"><label class="form-label">Owner objections</label><textarea class="form-control" name="owner_objections" rows="2"></textarea></div>
-    <div class="col-12"><label class="form-label">Conversation summary</label><textarea class="form-control" name="conversation_summary" rows="2"></textarea></div>
-    <div class="col-12"><label class="form-label">Notas generales</label><textarea class="form-control" name="notes" rows="3"></textarea></div>
-    <div class="col-12"><label class="form-label">Next action</label><input class="form-control" name="next_action"></div>
+<div class="col-12 col-md-4">
+  <label class="form-label">Insurance company</label>
+  <input class="form-control" name="insurance_company" list="insurance_companies" placeholder="Select or type insurance company">
+  <datalist id="insurance_companies">
+    <option value="Universal Property">
+    <option value="Citizens">
+    <option value="State Farm">
+    <option value="Florida Peninsula">
+    <option value="Tower Hill">
+    <option value="Security First">
+    <option value="Slide Insurance">
+    <option value="Heritage">
+    <option value="Homeowners Choice">
+    <option value="Olympus">
+    <option value="TypTap">
+    <option value="Progressive">
+    <option value="Allstate">
+    <option value="UPC">
+    <option value="Southern Oak">
+    <option value="Edison">
+    <option value="American Integrity">
+    <option value="Kin">
+    <option value="Monarch">
+    <option value="Other">
+  </datalist>
+</div>
+
+<div class="col-12 col-md-4">
+  <label class="form-label">Policy name/type</label>
+  <input class="form-control" name="policy_name_or_type" list="policy_types" placeholder="Select or type policy">
+  <datalist id="policy_types">
+    <option value="HO3">
+    <option value="HO4">
+    <option value="HO5">
+    <option value="DP3">
+    <option value="Condo Policy">
+    <option value="Commercial Property">
+    <option value="Commercial Package">
+    <option value="Church Policy">
+    <option value="Landlord Policy">
+    <option value="Renters Policy">
+    <option value="Other">
+  </datalist>
+</div>
+
+<div class="col-12 col-md-2">
+  <label class="form-label">Roof age</label>
+  <select class="form-select" name="roof_age">
+    <option value=""></option>
+    {% for i in range(1, 31) %}
+    <option value="{{ i }}">{{ i }}</option>
+    {% endfor %}
+    <option value="30+">30+</option>
+    <option value="Unknown">Unknown</option>
+  </select>
+</div>
+
+<div class="col-12 col-md-2">
+  <label class="form-label">Home year</label>
+  <input class="form-control" name="home_year" list="home_year_options" placeholder="Select or type year">
+  <datalist id="home_year_options">
+    {% for y in range(2026, 1899, -1) %}
+    <option value="{{ y }}">
+    {% endfor %}
+    <option value="Unknown">
+  </datalist>
+</div>
+
+<div class="col-12 col-md-2">
+  <label class="form-label">Years in house</label>
+  <select class="form-select" name="years_in_house">
+    <option value=""></option>
+    {% for i in range(1, 31) %}
+    <option value="{{ i }}">{{ i }}</option>
+    {% endfor %}
+    <option value="30+">30+</option>
+    <option value="Unknown">Unknown</option>
+  </select>
+</div>
+
+<div class="col-12 col-md-2">
+  <label class="form-label">Prior claim</label>
+  <select class="form-select" name="prior_claim">
+    <option></option>
+    <option>Yes</option>
+    <option>No</option>
+    <option>Unknown</option>
+  </select>
+</div>
+
+<div class="col-12 col-md-4">
+  <label class="form-label">Prior claim details</label>
+  <input class="form-control" name="prior_claim_details" placeholder="Claim date, carrier response, amount, type of loss">
+</div>
+
+<div class="col-12 col-md-3">
+  <label class="form-label">Property type</label>
+  <select class="form-select" name="property_type">
+    <option value=""></option>
+    <option value="Residential Single Family">Residential Single Family</option>
+    <option value="Residential Double Story">Residential Double Story</option>
+    <option value="Rental Property">Rental Property</option>
+    <option value="Condominium">Condominium</option>
+    <option value="Commercial">Commercial</option>
+    <option value="Church">Church</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+
+<div class="col-12 col-md-3">
+  <label class="form-label">Damage type</label>
+  <input class="form-control" name="damage_type" list="damage_type_options" placeholder="Select or type claim / damage">
+  <datalist id="damage_type_options">
+    <option value="Hurricane">
+    <option value="Wind">
+    <option value="Hail">
+    <option value="Water">
+    <option value="Roof Leak">
+    <option value="Ceiling Damage">
+    <option value="Kitchen Leak">
+    <option value="Bathroom Leak">
+    <option value="Plumbing Leak">
+    <option value="AC Leak">
+    <option value="Mold">
+    <option value="Fire">
+    <option value="Smoke">
+    <option value="Collapse">
+    <option value="Storm Damage">
+    <option value="Interior Water Damage">
+    <option value="Exterior Damage">
+    <option value="Flood">
+    <option value="Other">
+  </datalist>
+</div>
+
+<div class="col-12 col-md-3">
+  <label class="form-label">Best time to contact</label>
+  <input class="form-control" name="best_time_to_contact" list="best_contact_options" placeholder="Select or type">
+  <datalist id="best_contact_options">
+    <option value="Morning">
+    <option value="Afternoon">
+    <option value="Evening">
+    <option value="Anytime">
+    <option value="Weekdays">
+    <option value="Weekends">
+  </datalist>
+</div>
+
+<div class="col-12 col-md-3">
+  <label class="form-label">Follow-up type</label>
+  <select class="form-select" name="follow_up_type">
+    <option value=""></option>
+    <option>call</option>
+    <option>text</option>
+    <option>second_visit</option>
+    <option>inspection_confirmation</option>
+    <option>document_followup</option>
+  </select>
+</div>
+
+<div class="col-12 col-md-4">
+  <label class="form-label">Follow-up date</label>
+  <input type="date" class="form-control" name="follow_up_date">
+</div>
+
+<div class="col-12 col-md-4">
+  <label class="form-label">Inspection date</label>
+  <input type="date" class="form-control" name="inspection_date">
+</div>
+
+<div class="col-12 col-md-4">
+  <label class="form-label">Inspection time</label>
+  <input type="time" class="form-control" name="inspection_time">
+</div>
+
+<div class="col-12">
+  <label class="form-label">Damage details</label>
+  <textarea class="form-control" name="damage_details" rows="2" placeholder="Describe visible damage, rooms affected, roof, interior, leak source, etc."></textarea>
+</div>
+
+<div class="col-12">
+  <label class="form-label">Owner objections</label>
+  <textarea class="form-control" name="owner_objections" rows="2" placeholder="Not interested, already has PA, wants to call later, deductible concern, trust issue, etc."></textarea>
+</div>
+
+<div class="col-12">
+  <label class="form-label">Conversation summary</label>
+  <textarea class="form-control" name="conversation_summary" rows="2" placeholder="Quick summary of what happened in the conversation"></textarea>
+</div>
+
+<div class="col-12">
+  <label class="form-label">Notas generales</label>
+  <textarea class="form-control" name="notes" rows="3" placeholder="Full internal notes"></textarea>
+</div>
+
+<div class="col-12">
+  <label class="form-label">Next action</label>
+  <input class="form-control" name="next_action" list="next_action_options" placeholder="Select or type next action">
+  <datalist id="next_action_options">
+    <option value="Send text follow-up">
+    <option value="Call back">
+    <option value="Second visit">
+    <option value="Send documents">
+    <option value="Schedule inspection">
+    <option value="Confirm inspection">
+    <option value="Review policy">
+    <option value="Follow up on signed LOR">
+    <option value="Pending carrier response">
+    <option value="Collect photos">
+    <option value="Other">
+  </datalist>
+</div>
 
     <div class="col-12 d-flex gap-2">
       <button class="btn btn-primary">Guardar</button>
