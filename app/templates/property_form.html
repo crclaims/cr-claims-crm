@@ -2,31 +2,145 @@
 {% extends "layout.html" %}
 {% block content %}
 <h3 class="mb-3">Nueva visita / nueva casa</h3>
-<form method="post" class="card p-3">
+<form method="post" class="card p-3" id="propertyForm">
   <div class="row g-3">
-    <div class="col-12 col-md-8"><label class="form-label">Dirección completa</label><input class="form-control" name="full_address" required></div>
-    <div class="col-6 col-md-2"><label class="form-label"># Casa</label><input class="form-control" name="house_number"></div>
-    <div class="col-6 col-md-2"><label class="form-label">Zipcode</label><input class="form-control" name="zipcode"></div>
-    <div class="col-12 col-md-4"><label class="form-label">Calle</label><input class="form-control" name="street_name"></div>
-    <div class="col-6 col-md-3"><label class="form-label">Ciudad</label><input class="form-control" name="city"></div>
-    <div class="col-6 col-md-2"><label class="form-label">Estado</label><input class="form-control" name="state" value="FL"></div>
-    <div class="col-6 col-md-3"><label class="form-label">County</label><input class="form-control" name="county"></div>
-    <div class="col-6 col-md-2"><label class="form-label">Lat</label><input class="form-control" id="latitude" name="latitude"></div>
-    <div class="col-6 col-md-2"><label class="form-label">Lng</label><input class="form-control" id="longitude" name="longitude"></div>
-    <div class="col-6 col-md-2 d-flex align-items-end"><button type="button" class="btn btn-outline-secondary w-100" onclick="captureGPS()">Usar GPS</button></div>
 
-    <div class="col-12 col-md-4"><label class="form-label">Estado rápido</label><select class="form-select" name="current_status">{% for s in STATUSES %}<option>{{ s }}</option>{% endfor %}</select></div>
-    <div class="col-6 col-md-2"><label class="form-label">Carros</label><select class="form-select" name="cars_in_driveway"><option>0</option><option>1</option><option>2</option><option>3+</option></select></div>
-    <div class="col-6 col-md-2"><label class="form-label">Asignado a</label><select class="form-select" name="assigned_to"><option value=""></option>{% for u in users %}<option>{{ u.full_name }}</option>{% endfor %}</select></div>
-    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="roof_damage_visible" id="roof_damage_visible"><label class="form-check-label" for="roof_damage_visible">Roof damage</label></div>
-    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="flyer_left" id="flyer_left"><label class="form-check-label" for="flyer_left">Flyer left</label></div>
-    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="gate_closed" id="gate_closed"><label class="form-check-label" for="gate_closed">Gate closed</label></div>
-    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="tarp_visible" id="tarp_visible"><label class="form-check-label" for="tarp_visible">Tarp visible</label></div>
-    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="exterior_damage_visible" id="exterior_damage_visible"><label class="form-check-label" for="exterior_damage_visible">Exterior damage</label></div>
-    <div class="col-6 col-md-2 form-check d-flex align-items-end"><input class="form-check-input me-2" type="checkbox" name="water_stain_visible" id="water_stain_visible"><label class="form-check-label" for="water_stain_visible">Water stain</label></div>
+    <div class="col-12 d-flex flex-wrap gap-2 mb-2">
+      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="No Answer">
+        No Answer
+      </button>
+      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Flyer Left">
+        Flyer Left
+      </button>
+      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Spoke With Owner">
+        Spoke
+      </button>
+      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Follow Up">
+        Follow Up
+      </button>
+      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Inspection Scheduled">
+        Inspection
+      </button>
+    </div>
 
-    <div class="col-12"><label class="form-label">Nota rápida</label><input class="form-control" name="quick_note" placeholder="No answer, 2 cars, roof damage visible, flyer left"></div>
+    <div class="col-12">
+      <label class="form-label">Dirección completa</label>
+      <input class="form-control" name="full_address" required>
+    </div>
 
+    <div class="col-6 col-md-2">
+      <label class="form-label"># Casa</label>
+      <input class="form-control" name="house_number">
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">Zipcode</label>
+      <input class="form-control" name="zipcode">
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Calle</label>
+      <input class="form-control" name="street_name">
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">Ciudad</label>
+      <input class="form-control" name="city">
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">Estado</label>
+      <input class="form-control" name="state" value="FL">
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">County</label>
+      <input class="form-control" name="county">
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">Lat</label>
+      <input class="form-control" id="latitude" name="latitude">
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">Lng</label>
+      <input class="form-control" id="longitude" name="longitude">
+    </div>
+
+    <div class="col-6 col-md-2 d-flex align-items-end">
+      <button type="button" class="btn btn-outline-secondary w-100" onclick="captureGPS()">Usar GPS</button>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Estado rápido</label>
+      <select class="form-select" name="current_status" id="current_status">
+        {% for s in STATUSES %}
+        <option>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">Carros</label>
+      <select class="form-select" name="cars_in_driveway" id="cars_in_driveway">
+        <option>0</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4+</option>
+      </select>
+    </div>
+
+    <div class="col-6 col-md-2">
+      <label class="form-label">Asignado a</label>
+      <select class="form-select" name="assigned_to">
+        <option value=""></option>
+        {% for u in users %}
+        <option>{{ u.full_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-6 col-md-2 form-check">
+      <input class="form-check-input" type="checkbox" name="roof_damage_visible" id="roof_damage_visible">
+      <label class="form-check-label" for="roof_damage_visible">Roof damage</label>
+    </div>
+
+    <div class="col-6 col-md-2 form-check">
+      <input class="form-check-input" type="checkbox" name="flyer_left" id="flyer_left">
+      <label class="form-check-label" for="flyer_left">Flyer left</label>
+    </div>
+
+    <div class="col-6 col-md-2 form-check">
+      <input class="form-check-input" type="checkbox" name="gate_closed" id="gate_closed">
+      <label class="form-check-label" for="gate_closed">Gate closed</label>
+    </div>
+
+    <div class="col-6 col-md-2 form-check">
+      <input class="form-check-input" type="checkbox" name="tarp_visible" id="tarp_visible">
+      <label class="form-check-label" for="tarp_visible">Tarp visible</label>
+    </div>
+
+    <div class="col-6 col-md-2 form-check">
+      <input class="form-check-input" type="checkbox" name="exterior_damage_visible" id="exterior_damage_visible">
+      <label class="form-check-label" for="exterior_damage_visible">Exterior damage</label>
+    </div>
+
+    <div class="col-6 col-md-2 form-check">
+      <input class="form-check-input" type="checkbox" name="water_stain_visible" id="water_stain_visible">
+      <label class="form-check-label" for="water_stain_visible">Water stain</label>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Nota rápida</label>
+      <input class="form-control" name="quick_note" id="quick_note" placeholder="No answer, 2 cars, roof damage visible, flyer left">
+    </div>
+
+    <div class="col-12 d-flex flex-wrap gap-2 mb-2">
+      <button type="submit" class="btn btn-primary">Guardar visita rápida</button>
+    </div>
+    
     <hr class="my-2">
     <h5>Lead completo (si hablaron)</h5>
 
