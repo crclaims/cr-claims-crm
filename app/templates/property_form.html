@@ -7,143 +7,151 @@
 <form method="post" class="card p-3" id="propertyForm">
     <div class="row g-3">
 
-    <div class="col-12 d-flex flex-wrap gap-2 mb-2">
-      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="No Answer">
-        No Answer
-      </button>
-      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Flyer Left">
-        Flyer Left
-      </button>
-      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Spoke With Owner">
-        Spoke
-      </button>
-      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Follow Up">
-        Follow Up
-      </button>
-      <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Inspection Scheduled">
-        Inspection
-      </button>
-    </div>
+  <!-- BOTONES RÁPIDOS -->
+  <div class="col-12 d-flex flex-wrap gap-2 mb-2">
+    <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="No Answer">
+      No Answer
+    </button>
+    <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Flyer Left">
+      Flyer Left
+    </button>
+    <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Spoke With Owner">
+      Spoke
+    </button>
+    <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Follow Up">
+      Follow Up
+    </button>
+    <button type="button" class="btn btn-outline-secondary quick-status-btn" data-status="Inspection Scheduled">
+      Inspection
+    </button>
+  </div>
 
-    <div class="col-12">
-      <label class="form-label">Dirección completa</label>
-      <input class="form-control" name="full_address" required>
-    </div>
+  <!-- DIRECCION -->
+  <div class="col-12">
+    <label class="form-label">Dirección completa</label>
+    <input class="form-control" name="full_address" required>
+  </div>
 
-    <div class="col-6 col-md-2">
-      <label class="form-label"># Casa</label>
-      <input class="form-control" name="house_number">
-    </div>
+  <div class="col-12">
+    <button type="button" class="btn btn-outline-primary w-100" onclick="captureGPS()">
+      Usar GPS
+    </button>
+  </div>
 
-    <div class="col-6 col-md-2">
-      <label class="form-label">Zipcode</label>
-      <input class="form-control" name="zipcode">
+  <div class="col-6 col-md-3">
+    <label class="form-label"># Casa</label>
+    <input class="form-control" name="house_number">
+  </div>
 
-    <div class="col-12 col-md-4">
-      <label class="form-label">Calle</label>
-      <input class="form-control" name="street_name">
-    </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label">Zipcode</label>
+    <input class="form-control" name="zipcode">
+  </div>
 
-    <div class="col-6 col-md-2">
-      <label class="form-label">Ciudad</label>
-      <input class="form-control" name="city">
-    </div>
+  <div class="col-12 col-md-6">
+    <label class="form-label">Calle</label>
+    <input class="form-control" name="street_name">
+  </div>
 
-    <div class="col-6 col-md-2">
-      <label class="form-label">Estado</label>
-      <input class="form-control" name="state" value="FL">
-    </div>
+  <div class="col-6 col-md-4">
+    <label class="form-label">Ciudad</label>
+    <input class="form-control" name="city">
+  </div>
 
-    <div class="col-6 col-md-2">
-      <label class="form-label">County</label>
-      <input class="form-control" name="county">
-    </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label">Estado</label>
+    <input class="form-control" name="state" value="FL">
+  </div>
 
-    <div class="col-6 col-md-2">
-      <label class="form-label">Lat</label>
-      <input class="form-control" id="latitude" name="latitude">
-    </div>
+  <div class="col-12 col-md-6">
+    <label class="form-label">County</label>
+    <input class="form-control" name="county">
+  </div>
 
-    <div class="col-6 col-md-2">
-      <label class="form-label">Lng</label>
-      <input class="form-control" id="longitude" name="longitude">
-    </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label">Lat</label>
+    <input class="form-control" id="latitude" name="latitude">
+  </div>
 
-    <div class="col-6 col-md-2 d-flex align-items-end">
-      <button type="button" class="btn btn-outline-secondary w-100" onclick="captureGPS()">Usar GPS</button>
-    </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label">Lng</label>
+    <input class="form-control" id="longitude" name="longitude">
+  </div>
 
-    <div class="col-12 col-md-4">
-      <label class="form-label">Estado rápido</label>
-      <select class="form-select" name="current_status" id="current_status">
-        {% for s in STATUSES %}
-        <option>{{ s }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="col-6 col-md-2">
-      <label class="form-label">Carros</label>
-      <select class="form-select" name="cars_in_driveway" id="cars_in_driveway">
-        <option>0</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4+</option>
-      </select>
-    </div>
-
-    <div class="col-6 col-md-2">
-      <label class="form-label">Asignado a</label>
-      <select class="form-select" name="assigned_to">
-        <option value=""></option>
-        {% for u in users %}
-        <option>{{ u.full_name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="col-6 col-md-2 form-check">
-      <input class="form-check-input" type="checkbox" name="roof_damage_visible" id="roof_damage_visible">
-      <label class="form-check-label" for="roof_damage_visible">Roof damage</label>
-    </div>
-
-    <div class="col-6 col-md-2 form-check">
-      <input class="form-check-input" type="checkbox" name="flyer_left" id="flyer_left">
-      <label class="form-check-label" for="flyer_left">Flyer left</label>
-    </div>
-
-    <div class="col-6 col-md-2 form-check">
-      <input class="form-check-input" type="checkbox" name="gate_closed" id="gate_closed">
-      <label class="form-check-label" for="gate_closed">Gate closed</label>
-    </div>
-
-    <div class="col-6 col-md-2 form-check">
-      <input class="form-check-input" type="checkbox" name="tarp_visible" id="tarp_visible">
-      <label class="form-check-label" for="tarp_visible">Tarp visible</label>
-    </div>
-
-    <div class="col-6 col-md-2 form-check">
-      <input class="form-check-input" type="checkbox" name="exterior_damage_visible" id="exterior_damage_visible">
-      <label class="form-check-label" for="exterior_damage_visible">Exterior damage</label>
-    </div>
-
-    <div class="col-6 col-md-2 form-check">
-      <input class="form-check-input" type="checkbox" name="water_stain_visible" id="water_stain_visible">
-      <label class="form-check-label" for="water_stain_visible">Water stain</label>
-    </div>
-
-    <div class="col-12">
-      <label class="form-label">Nota rápida</label>
-      <input class="form-control" name="quick_note" id="quick_note" placeholder="No answer, 2 cars, roof damage visible, flyer left">
-    </div>
-
-    <div class="col-12 d-flex flex-wrap gap-2 mb-2">
-      <button type="submit" class="btn btn-primary">Guardar visita rápida</button>
-    </div>
-    
+  <div class="col-12">
     <hr class="my-2">
-    <h5>Lead completo (si hablaron)</h5>
+    <h5 class="mb-2">Captura rápida</h5>
+  </div>
+
+  <div class="col-12 col-md-4">
+  <label class="form-label">Estado rápido</label>
+  <input class="form-control" name="current_status" id="status" placeholder="Select or type quick status">
+</div>
+
+  <div class="col-6 col-md-2">
+  <label class="form-label">Carros</label>
+  <select class="form-select" name="cars_in_driveway">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4+</option>
+  </select>
+</div>
+
+  <div class="col-6 col-md-3">
+    <label class="form-label">Asignado a</label>
+    <input class="form-control" name="assigned_to">
+  </div>
+
+  <div class="col-6 col-md-2 form-check">
+    <input class="form-check-input" type="checkbox" name="roof_damage_visible" id="roof_damage_visible">
+    <label class="form-check-label" for="roof_damage_visible">Roof damage</label>
+  </div>
+
+  <div class="col-6 col-md-2 form-check">
+    <input class="form-check-input" type="checkbox" name="flyer_left" id="flyer_left">
+    <label class="form-check-label" for="flyer_left">Flyer left</label>
+  </div>
+
+  <div class="col-6 col-md-2 form-check">
+    <input class="form-check-input" type="checkbox" name="gate_closed" id="gate_closed">
+    <label class="form-check-label" for="gate_closed">Gate closed</label>
+  </div>
+
+  <div class="col-6 col-md-2 form-check">
+    <input class="form-check-input" type="checkbox" name="tarp_visible" id="tarp_visible">
+    <label class="form-check-label" for="tarp_visible">Tarp visible</label>
+  </div>
+
+  <div class="col-6 col-md-2 form-check">
+    <input class="form-check-input" type="checkbox" name="exterior_damage_visible" id="exterior_damage_visible">
+    <label class="form-check-label" for="exterior_damage_visible">Exterior damage</label>
+  </div>
+
+  <div class="col-6 col-md-2 form-check">
+    <input class="form-check-input" type="checkbox" name="water_stain_visible" id="water_stain_visible">
+    <label class="form-check-label" for="water_stain_visible">Water stain</label>
+  </div>
+
+  <div class="col-12">
+    <label class="form-label">Nota rápida</label>
+    <input class="form-control" name="quick_note" id="quick_note" placeholder="No answer, 2 cars, roof damage visible, flyer left">
+  </div>
+
+  <div class="col-12 d-flex flex-wrap gap-2 mb-2">
+    <button type="submit" class="btn btn-primary">Guardar visita rápida</button>
+  </div>
+
+  <div class="col-12">
+    <hr class="my-2">
+  </div>
+
+</div>
+    <div class="row g-3">
+  <div class="col-12">
+    <h5 class="mb-1">Lead completo (si hablaron)</h5>
+  </div>
 
     <div class="col-12 col-md-4"><label class="form-label">Owner name</label><input class="form-control" name="owner_name"></div>
     <div class="col-12 col-md-4"><label class="form-label">Phone</label><input class="form-control" name="phone"></div>
@@ -164,215 +172,207 @@
   </datalist>
 </div>
 <div class="col-12 col-md-4">
-  <label class="form-label">Insurance company</label>
-  <input class="form-control" name="insurance_company" id="insurance_company" list="insurance_companies" placeholder="Select or type insurance company">
-  <datalist id="insurance_companies">
-    <option value="Universal Property">
-    <option value="Citizens">
-    <option value="State Farm">
-    <option value="Florida Peninsula">
-    <option value="Tower Hill">
-    <option value="Security First">
-    <option value="Slide Insurance">
-    <option value="Heritage">
-    <option value="Homeowners Choice">
-    <option value="Olympus">
-    <option value="TypTap">
-    <option value="Progressive">
-    <option value="Allstate">
-    <option value="UPC">
-    <option value="Southern Oak">
-    <option value="Edison">
-    <option value="American Integrity">
-    <option value="Kin">
-    <option value="Monarch">
-    <option value="Other">
-  </datalist>
-</div>
-</div>
+    <label class="form-label">Insurance company</label>
+    <input class="form-control" name="insurance_company" id="insurance_company" list="insurance_companies" placeholder="Select or type insurance company">
+    <datalist id="insurance_companies">
+      <option value="Universal Property">
+      <option value="Citizens">
+      <option value="State Farm">
+      <option value="Florida Peninsula">
+      <option value="Tower Hill">
+      <option value="Security First">
+      <option value="Slide Insurance">
+      <option value="Heritage">
+      <option value="Homeowners Choice">
+      <option value="Olympus">
+      <option value="TypTap">
+      <option value="Progressive">
+      <option value="Allstate">
+      <option value="UPC">
+      <option value="Southern Oak">
+      <option value="Edison">
+      <option value="American Integrity">
+      <option value="Kin">
+      <option value="Monarch">
+      <option value="Other">
+    </datalist>
+  </div>
 
-<div class="col-12 col-md-4">
-<label class="form-label">Policy Type</label>
-<input class="form-control" name="policy_type" id="policy_type" list="policy_types" placeholder="Select policy type">
-
+  <div class="col-12 col-md-4">
+    <label class="form-label">Policy Type</label>
+    <input class="form-control" name="policy_name_or_type" id="policy_type" list="policy_types" placeholder="Select policy type">
 <datalist id="policy_types">
-<option value="DP-1 Basica">
-<option value="DP-2 Intermedia">
-<option value="DP-3 Completa (Landlord)">
-<option value="HO-1 Basic Form">
-<option value="HO-2 Broad Form">
-<option value="HO-3 Special Form">
-<option value="HO-4 Renters Insurance">
-<option value="HO-5 Comprehensive Form">
-<option value="HO-06 Condo Policy">
-<option value="HO-07 Mobile Home Policy">
-<option value="HO-08 Older Home Policy">
-<option value="BOP Business Owner Policy">
-<option value="CPP Commercial Property Policy">
-<option value="CP Commercial Property">
-<option value="CGL Commercial General Liability">
-<option value="Otras">
+  <option value="DP-1 Basica">
+  <option value="DP-2 Intermedia">
+  <option value="DP-3 Completa (Landlord)">
+  <option value="HO-1 Basic Form">
+  <option value="HO-2 Broad Form">
+  <option value="HO-3 Special Form">
+  <option value="HO-4 Renters Insurance">
+  <option value="HO-5 Comprehensive Form">
+  <option value="HO-06 Condo Policy">
+  <option value="HO-07 Mobile Home Policy">
+  <option value="HO-08 Older Home Policy">
+  <option value="BOP Business Owner Policy">
+  <option value="CPP Commercial Property Policy">
+  <option value="CP Commercial Property">
+  <option value="CGL Commercial General Liability">
+  <option value="Otras">
 </datalist>
-</div>
+  </div>
 
-<div class="col-12 col-md-2">
-  <label class="form-label">Roof age</label>
-  <input class="form-control" name="roof_age" id="roof_age" list="roof_age_options" placeholder="Select or type roof age">
-
-  <datalist id="roof_age_options">
-    {% for i in range(1, 31) %}
-    <option value="{{ i }}">
-    {% endfor %}
-    <option value="30+">
-    <option value="Unknown">
+  <div class="col-12 col-md-2">
+    <label class="form-label">Roof age</label>
+    <input class="form-control" name="roof_age" id="roof_age" list="roof_age_options" placeholder="Select or type roof age">
+    <datalist id="roof_age_options">
+      {% for i in range(1, 31) %}
+      <option value="{{ i }}">
+      {% endfor %}
+      <option value="30+">
+      <option value="Unknown">
   </datalist>
 </div>
 
 <div class="col-12 col-md-2">
-  <label class="form-label">Home year</label>
-  <input class="form-control" name="home_year" list="home_year_options" placeholder="Select or type year">
-  <datalist id="home_year_options">
-    {% for y in range(2026, 1899, -1) %}
-    <option value="{{ y }}">
-    {% endfor %}
-    <option value="Unknown">
-  </datalist>
-</div>
+    <label class="form-label">Home year</label>
+    <input class="form-control" name="home_year" list="home_year_options" placeholder="Select or type year">
+    <datalist id="home_year_options">
+      {% for y in range(2026, 1899, -1) %}
+      <option value="{{ y }}">
+      {% endfor %}
+      <option value="Unknown">
+    </datalist>
+  </div>
 
-<div class="col-12 col-md-2">
-  <label class="form-label">Years in house</label>
-  <input class="form-control" name="years_in_house" id="years_in_house" list="years_in_house_options" placeholder="Select or type years">
+  <div class="col-12 col-md-2">
+    <label class="form-label">Years in house</label>
+    <input class="form-control" name="years_in_house" id="years_in_house" list="years_in_house_options" placeholder="Select or type years">
+    <datalist id="years_in_house_options">
+      {% for i in range(1, 31) %}
+      <option value="{{ i }}">
+      {% endfor %}
+      <option value="30+">
+      <option value="Unknown">
+    </datalist>
+  </div>
 
-  <datalist id="years_in_house_options">
-    {% for i in range(1, 31) %}
-    <option value="{{ i }}">
-    {% endfor %}
-    <option value="30+">
-    <option value="Unknown">
-  </datalist>
-</div>
+  <div class="col-12 col-md-2">
+    <label class="form-label">Prior claim</label>
+    <select class="form-select" name="prior_claim" id="prior_claim">
+      <option value=""></option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+      <option value="Unknown">Unknown</option>
+    </select>
+  </div>
 
-<div class="col-12 col-md-2">
-<label class="form-label">Prior claim</label>
-<select class="form-select" name="prior_claim" id="prior_claim">
-<option value=""></option>
-<option value="Yes">Yes</option>
-<option value="No">No</option>
-<option value="Unknown">Unknown</option>
-</select>
-</div>
+  <div class="col-12 col-md-4">
+    <label class="form-label">Prior claim details</label>
+    <input class="form-control" name="prior_claim_details" placeholder="Claim date, carrier response, amount, type of loss">
+  </div>
 
-<div class="col-12 col-md-4">
-  <label class="form-label">Prior claim details</label>
-  <input class="form-control" name="prior_claim_details" placeholder="Claim date, carrier response, amount, type of loss">
-</div>
+  <div class="col-12 col-md-3">
+    <label class="form-label">Property type</label>
+    <input class="form-control" name="property_type" id="property_type" list="property_type_options" placeholder="Select property type">
+    <datalist id="property_type_options">
+      <option value="Single Family">
+      <option value="Townhouse">
+      <option value="Condo">
+      <option value="Duplex">
+      <option value="Triplex">
+      <option value="Quadplex">
+      <option value="Mobile Home">
+      <option value="Apartment">
+      <option value="Commercial">
+      <option value="Church">
+      <option value="Other">
+    </datalist>
+  </div>
 
+  <div class="col-12 col-md-3">
+    <label class="form-label">Damage type</label>
+    <input class="form-control" name="damage_type" id="damage_type" list="damage_type_options" placeholder="Select damage type">
+    <datalist id="damage_type_options">
+      <option value="Hurricane">
+      <option value="Wind">
+      <option value="Hail">
+      <option value="Water">
+      <option value="Roof Leak">
+      <option value="Ceiling Damage">
+      <option value="Kitchen Leak">
+      <option value="Bathroom Leak">
+      <option value="Plumbing Leak">
+      <option value="AC Leak">
+      <option value="Mold">
+      <option value="Fire">
+      <option value="Smoke">
+      <option value="Collapse">
+      <option value="Storm Damage">
+      <option value="Interior Water Damage">
+      <option value="Exterior Damage">
+      <option value="Flood">
+      <option value="Other">
+    </datalist>
+  </div>
 <div class="col-12 col-md-3">
-<label class="form-label">Property type</label>
-<input class="form-control" name="property_type" id="property_type" list="property_type_options" placeholder="Select property type">
+    <label class="form-label">Best time to contact</label>
+    <input class="form-control" name="best_time_to_contact" id="best_time_to_contact" list="best_contact_options" placeholder="Select or type best time to contact">
+    <datalist id="best_contact_options">
+      <option value="Morning">
+      <option value="Mid Morning">
+      <option value="Late Morning">
+      <option value="Noon/Midday">
+      <option value="Early afternoon">
+      <option value="Afternoon">
+      <option value="Late afternoon">
+      <option value="Evening">
+      <option value="Late evening">
+      <option value="Tomorrow morning">
+      <option value="Tomorrow afternoon">
+      <option value="Tomorrow evening">
+      <option value="This weekend">
+      <option value="Saturday morning">
+      <option value="Saturday afternoon">
+      <option value="Sunday">
+      <option value="Next week">
+      <option value="Any time today">
+      <option value="Any time this week">
+    </datalist>
+  </div>
 
-<datalist id="property_type_options">
-<option value="Single Family">
-<option value="Townhouse">
-<option value="Condo">
-<option value="Duplex">
-<option value="Triplex">
-<option value="Quadplex">
-<option value="Mobile Home">
-<option value="Apartment">
-<option value="Commercial">
-<option value="Church">
-<option value="Other">
-</datalist>
-</div>
+  <div class="col-12 col-md-3">
+    <label class="form-label">Follow-up type</label>
+    <input class="form-control" name="follow_up_type" id="follow_up_type" list="follow_up_type_options" placeholder="Select or type follow-up type">
+    <datalist id="follow_up_type_options">
+      <option value="Call">
+      <option value="Text Message">
+      <option value="WhatsApp">
+      <option value="Second Visit">
+      <option value="Inspection Confirmation">
+      <option value="Document Follow-Up">
+      <option value="Claim Update">
+    </datalist>
+  </div>
 
-<div class="col-12 col-md-3">
-<label class="form-label">Damage type</label>
-<input class="form-control" name="damage_type" id="damage_type" list="damage_type_options" placeholder="Select damage type">
+  <div class="col-12 col-md-3">
+    <label class="form-label">Follow-up date</label>
+    <input type="date" class="form-control" name="follow_up_date" id="follow_up_date">
+  </div>
 
-<datalist id="damage_type_options">
-<option value="Hurricane">
-<option value="Wind">
-<option value="Hail">
-<option value="Water">
-<option value="Roof Leak">
-<option value="Ceiling Damage">
-<option value="Kitchen Leak">
-<option value="Bathroom Leak">
-<option value="Plumbing Leak">
-<option value="AC Leak">
-<option value="Mold">
-<option value="Fire">
-<option value="Smoke">
-<option value="Collapse">
-<option value="Storm Damage">
-<option value="Interior Water Damage">
-<option value="Exterior Damage">
-<option value="Flood">
-<option value="Other">
-</datalist>
-</div>
-<div class="col-12 col-md-3">
-  <label class="form-label">Best time to contact</label>
-  <input class="form-control" name="best_time_to_contact" id="best_time_to_contact" list="best_contact_options" placeholder="Select or type best time to contact">
-  <datalist id="best_contact_options">
-    <option value="Morning">
-    <option value="Mid Morning">
-    <option value="Late Morning">
-    <option value="Noon/Midday">
-    <option value="Early afternoon">
-    <option value="Afternoon">
-    <option value="Late afternoon">
-    <option value="Evening">
-    <option value="Late evening">
-    <option value="Tomorrow morning">
-    <option value="Tomorrow afternoon">
-    <option value="Tomorrow evening">
-    <option value="This weekend">
-    <option value="Saturday morning">
-    <option value="Saturday afternoon">
-    <option value="Sunday">
-    <option value="Next week">
-    <option value="Any time today">
-    <option value="Any time this week">
-  </datalist>
-</div>
+  <div class="col-12 col-md-3">
+    <label class="form-label">Inspection date</label>
+    <input type="date" class="form-control" name="inspection_date" id="inspection_date">
+  </div>
 
-<div class="col-12 col-md-3">
-  <label class="form-label">Next action or Follow-Up</label>
-  <input class="form-control" name="follow_up_type" id="follow_up_type" list="follow_up_type_options" placeholder="Select or type next action">
+  <div class="col-12 col-md-3">
+    <label class="form-label">Inspection time</label>
+    <input type="time" class="form-control" name="inspection_time" id="inspection_time">
+  </div>
 
-  <datalist id="follow_up_type_options">
-    <option value="Call">
-<option value="Text Message">
-<option value="WhatsApp">
-<option value="Second Visit">
-<option value="Inspection Confirmation">
-<option value="Document Follow-Up">
-<option value="Claim Update">
-  </datalist>
-</div>
-
-<div class="col-12 col-md-4">
-  <label class="form-label">Follow-up date</label>
-  <input type="date" class="form-control" name="follow_up_date" id="follow_up_date">
-</div>
-
-<div class="col-12 col-md-4">
-  <label class="form-label">Inspection date</label>
-<input type="date" class="form-control" name="inspection_date" id="inspection_date">
-</div>
-
-<div class="col-12 col-md-4">
-  <label class="form-label">Inspection time</label>
- <input type="time" class="form-control" name="inspection_time" id="inspection_time">
-</div>
-
-<div class="col-12">
-  <label class="form-label">Damage details</label>
-  <textarea class="form-control" name="damage_details" id="damage_details" rows="2" placeholder="Describe visible damage, rooms affected, roof, interior, leak source, etc."></textarea>
-</div>
-
+  <div class="col-12">
+    <label class="form-label">Damage details</label>
+    <textarea class="form-control" name="damage_details" id="damage_details" rows="2" placeholder="Describe visible damage, rooms affected, roof, interior, leak source, etc."></textarea>
+  </div>
 <div class="col-12">
   <label class="form-label">Owner objections</label>
   <input class="form-control" name="owner_objections" id="owner_objections" list="owner_objections_options" placeholder="Seleccione o escriba una objeción">
