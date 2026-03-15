@@ -164,12 +164,13 @@ def property_new():
             property_type=form.get("property_type"),
             damage_type=form.get("damage_type"),
             damage_details=form.get("damage_details"),
-            best_time_to_contact=form.get("best_time_to_contact"),
-            owner_objections=form.get("owner_objections"),
-            conversation_summary=form.get("conversation_summary"),
-            notes=form.get("notes"),
-            assigned_to=form.get("assigned_to"),
-            follow_up_date=datetime.strptime(form.get("follow_up_date"), "%Y-%m-%d").date() if form.get("follow_up_date") else None,
+           owner_objections=form.get("owner_objections"),
+           conversation_summary=form.get("conversation_summary"),
+           notes=form.get("notes"),
+           lead_result=form.get("lead_result"),
+           next_action=form.get("next_action"),
+           assigned_to=form.get("assigned_to"),
+           follow_up_date=datetime.strptime(form.get("follow_up_date"), "%Y-%m-%d").date() if form.get("follow_up_date") else None,
             inspection_date=datetime.strptime(form.get("inspection_date"), "%Y-%m-%d").date() if form.get("inspection_date") else None,
             inspection_time=form.get("inspection_time"),
         )
@@ -261,6 +262,8 @@ def property_edit(property_id):
         row.owner_objections = form.get("owner_objections")
         row.conversation_summary = form.get("conversation_summary")
         row.notes = form.get("notes")
+        row.lead_result = form.get("lead_result")
+row.next_action = form.get("next_action")
         row.assigned_to = form.get("assigned_to")
         row.current_status = form.get("current_status")
         row.follow_up_date = datetime.strptime(form.get("follow_up_date"), "%Y-%m-%d").date() if form.get("follow_up_date") else None
@@ -445,12 +448,15 @@ def reports():
 def export_properties():
     rows = Property.query.order_by(Property.updated_at.desc()).all()
     output = io.StringIO()
-    fieldnames = [
-        "id","full_address","city","state","zipcode","current_status","owner_name","phone",
-        "insurance_company","roof_age","years_in_house","assigned_to","follow_up_date","inspection_date","last_visit_at"
+   fieldnames = [
+        "id", "full_address", "city", "state", "zipcode", "current_status", "owner_name", "phone",
+        "insurance_company", "roof_age", "years_in_house", "assigned_to",
+        "lead_result", "next_action", "follow_up_date", "inspection_date", "last_visit_at"
     ]
+
     writer = csv.DictWriter(output, fieldnames=fieldnames)
     writer.writeheader()
+
     for r in rows:
         writer.writerow({
             "id": r.id,
@@ -465,6 +471,8 @@ def export_properties():
             "roof_age": r.roof_age,
             "years_in_house": r.years_in_house,
             "assigned_to": r.assigned_to,
+            "lead_result": r.lead_result,
+            "next_action": r.next_action,
             "follow_up_date": r.follow_up_date,
             "inspection_date": r.inspection_date,
             "last_visit_at": r.last_visit_at,
