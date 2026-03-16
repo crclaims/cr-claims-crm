@@ -448,10 +448,24 @@ def reports():
 def export_properties():
     rows = Property.query.order_by(Property.updated_at.desc()).all()
     output = io.StringIO()
-   fieldnames = [
-        "id", "full_address", "city", "state", "zipcode", "current_status", "owner_name", "phone",
-        "insurance_company", "roof_age", "years_in_house", "assigned_to",
-        "lead_result", "next_action", "follow_up_date", "inspection_date", "last_visit_at"
+fieldnames = [
+        "id",
+        "full_address",
+        "city",
+        "state",
+        "zipcode",
+        "current_status",
+        "owner_name",
+        "phone",
+        "insurance_company",
+        "roof_age",
+        "years_in_house",
+        "assigned_to",
+        "lead_result",
+        "next_action",
+        "follow_up_date",
+        "inspection_date",
+        "last_visit_at",
     ]
 
     writer = csv.DictWriter(output, fieldnames=fieldnames)
