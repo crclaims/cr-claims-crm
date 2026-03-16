@@ -448,7 +448,8 @@ def reports():
 def export_properties():
     rows = Property.query.order_by(Property.updated_at.desc()).all()
     output = io.StringIO()
-fieldnames = [
+
+    fieldnames = [
         "id",
         "full_address",
         "city",
@@ -491,7 +492,12 @@ fieldnames = [
             "inspection_date": r.inspection_date,
             "last_visit_at": r.last_visit_at,
         })
-    return Response(output.getvalue(), mimetype="text/csv", headers={"Content-Disposition": "attachment; filename=cr_properties_export.csv"})
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=cr_properties_export.csv"},
+    )
 
 @bp.route("/map")
 @login_required
