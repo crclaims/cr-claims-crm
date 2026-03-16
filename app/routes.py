@@ -498,7 +498,6 @@ def export_properties():
         mimetype="text/csv",
         headers={"Content-Disposition": "attachment; filename=cr_properties_export.csv"},
     )
-
 @bp.route("/map")
 @login_required
 def map_view():
