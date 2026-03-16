@@ -468,7 +468,6 @@ def export_properties():
         "inspection_date",
         "last_visit_at",
     ]
-
     writer = csv.DictWriter(output, fieldnames=fieldnames)
     writer.writeheader()
 
