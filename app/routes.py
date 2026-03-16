@@ -263,7 +263,7 @@ def property_edit(property_id):
         row.conversation_summary = form.get("conversation_summary")
         row.notes = form.get("notes")
         row.lead_result = form.get("lead_result")
-row.next_action = form.get("next_action")
+        row.next_action = form.get("next_action")
         row.assigned_to = form.get("assigned_to")
         row.current_status = form.get("current_status")
         row.follow_up_date = datetime.strptime(form.get("follow_up_date"), "%Y-%m-%d").date() if form.get("follow_up_date") else None
