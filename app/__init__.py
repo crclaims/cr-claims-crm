@@ -35,7 +35,7 @@ def ensure_property_columns():
 
 
 def create_app():
-    app = Flask(_name_, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True)
 
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "change-me-in-production")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///cr_claims_production.db")
