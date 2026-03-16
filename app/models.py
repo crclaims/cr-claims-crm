@@ -56,12 +56,11 @@ class Property(db.Model):
     conversation_summary = db.Column(db.Text)
     notes = db.Column(db.Text)
     lead_result = db.Column(db.String(120))
-next_action = db.Column(db.String(255))
-assigned_to = db.Column(db.String(120))
-follow_up_date = db.Column(db.Date)
-inspection_date = db.Column(db.Date)
-inspection_time = db.Column(db.String(20))
-
+    next_action = db.Column(db.String(255))
+    assigned_to = db.Column(db.String(120))
+    follow_up_date = db.Column(db.Date)
+    inspection_date = db.Column(db.Date)
+    inspection_time = db.Column(db.String(20))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -70,6 +69,7 @@ inspection_time = db.Column(db.String(20))
     call_logs = db.relationship("CallLog", backref="property", cascade="all, delete-orphan")
     attachments = db.relationship("Attachment", backref="property", cascade="all, delete-orphan")
     status_history = db.relationship("StatusHistory", backref="property", cascade="all, delete-orphan")
+   
 
 class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
