@@ -154,8 +154,32 @@
   </div>
 
     <div class="col-12 col-md-4"><label class="form-label">Owner name</label><input class="form-control" name="owner_name"></div>
-    <div class="col-12 col-md-4"><label class="form-label">Phone</label><input class="form-control" name="phone"></div>
-    <div class="col-12 col-md-4"><label class="form-label">Alternate phone</label><input class="form-control" name="alternate_phone"></div>
+    <div class="col-12 col-md-4">
+  <label class="form-label">Phone</label>
+  <input
+    type="tel"
+    class="form-control phone-mask"
+    name="phone"
+    id="phone"
+    inputmode="numeric"
+    autocomplete="tel"
+    maxlength="18"
+    placeholder="+1 (407) 000-0000"
+  >
+</div>
+    <div class="col-12 col-md-4">
+  <label class="form-label">Alternate phone</label>
+  <input
+    type="tel"
+    class="form-control phone-mask"
+    name="alternate_phone"
+    id="alternate_phone"
+    inputmode="numeric"
+    autocomplete="tel"
+    maxlength="18"
+    placeholder="+1 (407) 000-0000"
+  >
+</div>
     <div class="col-12 col-md-4"><label class="form-label">Email</label><input class="form-control" name="email"></div>
    <div class="col-12 col-md-4">
   <label class="form-label">Idioma</label>
@@ -532,7 +556,88 @@ if (!confirmed && fullAddressInput) {
 }, () => {
     alert("No se pudo obtener la ubicación");
   });
-}
+}function formatPhoneValue(value) {
+    const digits = (value || "").replace(/\D/g, "").slice(0, 11);
+
+    if (!digits) return "";
+
+    let normalized = digits;
+    if (normalized.length === 10) {
+      normalized = "1" + normalized;
+    }
+
+    if (normalized[0] !== "1") {
+      normalized = "1" + normalized.slice(0, 10);
+    }
+
+    const country = normalized.slice(0, 1);
+    const area = normalized.slice(1, 4);
+    const first = normalized.slice(4, 7);
+    const second = normalized.slice(7, 11);
+
+    let formatted = +${country};
+    if (area) formatted += ` (${area}`;
+    if (area.length === 3) formatted += );
+    if (first) formatted += ` ${first}`;
+    if (second) formatted += -${second};
+
+    return formatted;
+  }
+
+  function attachPhoneMask(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    input.addEventListener("input", function () {
+      this.value = formatPhoneValue(this.value);
+    });
+
+    input.addEventListener("blur", function () {
+      this.value = formatPhoneValue(this.value);
+    });
+
+    input.addEventListener("paste", function () {
+      setTimeout(() => {
+        this.value = formatPhoneValue(this.value);
+      }, 0);
+    });
+
+    if (input.value) {
+      input.value = formatPhoneValue(input.value);
+    }
+  }
+
+  attachPhoneMask("phone");
+  attachPhoneMask("alternate_phone");
+  document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("form");
+  if (!form) return;
+
+  form.addEventListener("submit", function () {
+    const phoneInput = document.getElementById("phone");
+    const alternatePhoneInput = document.getElementById("alternate_phone");
+
+    if (phoneInput && phoneInput.value) {
+      phoneInput.value = phoneInput.value.replace(/\D/g, "");
+    }
+
+    if (alternatePhoneInput && alternatePhoneInput.value) {
+      alternatePhoneInput.value = alternatePhoneInput.value.replace(/\D/g, "");
+    }
+  });
+});
+  document.addEventListener("DOMContentLoaded", function () {
+  const phoneInput = document.getElementById("phone");
+  const alternatePhoneInput = document.getElementById("alternate_phone");
+
+  if (phoneInput && phoneInput.value) {
+    phoneInput.value = formatPhoneValue(phoneInput.value);
+  }
+
+  if (alternatePhoneInput && alternatePhoneInput.value) {
+    alternatePhoneInput.value = formatPhoneValue(alternatePhoneInput.value);
+  }
+});
 </script>
 {% endblock %}
 
