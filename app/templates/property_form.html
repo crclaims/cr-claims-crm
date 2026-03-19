@@ -609,14 +609,24 @@ if (!confirmed && fullAddressInput) {
 
   attachPhoneMask("phone");
   attachPhoneMask("alternate_phone");
-  document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector("form");
   if (!form) return;
 
-  form.addEventListener("submit", function () {
-    const phoneInput = document.getElementById("phone");
-    const alternatePhoneInput = document.getElementById("alternate_phone");
+  const phoneInput = document.getElementById("phone");
+  const alternatePhoneInput = document.getElementById("alternate_phone");
 
+  // Formatear al cargar
+  if (phoneInput && phoneInput.value) {
+    phoneInput.value = formatPhoneValue(phoneInput.value);
+  }
+
+  if (alternatePhoneInput && alternatePhoneInput.value) {
+    alternatePhoneInput.value = formatPhoneValue(alternatePhoneInput.value);
+  }
+
+  // Limpiar antes de enviar
+  form.addEventListener("submit", function () {
     if (phoneInput && phoneInput.value) {
       phoneInput.value = phoneInput.value.replace(/\D/g, "");
     }
@@ -626,18 +636,7 @@ if (!confirmed && fullAddressInput) {
     }
   });
 });
-  document.addEventListener("DOMContentLoaded", function () {
-  const phoneInput = document.getElementById("phone");
-  const alternatePhoneInput = document.getElementById("alternate_phone");
-
-  if (phoneInput && phoneInput.value) {
-    phoneInput.value = formatPhoneValue(phoneInput.value);
-  }
-
-  if (alternatePhoneInput && alternatePhoneInput.value) {
-    alternatePhoneInput.value = formatPhoneValue(alternatePhoneInput.value);
-  }
-});
+  
 </script>
 {% endblock %}
 
